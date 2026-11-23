@@ -13,6 +13,7 @@
 | M5 延迟闸门 | 查看并运行延迟闸门 | `/api/latency` | `app/modules/m5_latency/rules.py` | `tests/test_m5.py` |
 | M6 双写对账 | 查看并运行双写对账 | `/api/parity` | `app/modules/m6_parity/rules.py` | `tests/test_m6.py` |
 | M7 回补归档 | 查看并运行回补归档 | `/api/backfills` | `app/modules/m7_backfills/rules.py` | `tests/test_m7.py` |
+| M8 检索裁决 | 查看并运行检索裁决 | `/api/retrieval` | `app/modules/m8_retrieval/rules.py` | `tests/test_m8.py` |
 
 ## 陷阱登记
 
@@ -31,6 +32,10 @@
 | TRAP-09 | 超大版本 | JSON精度损失 | 文本序列化 | `app/values.py` | `tests/test_m2.py::test_large_version_precise` |
 | TRAP-13 | 删除后迟到旧写 | 文档复活 | 最大版本墓碑 | `app/modules/m3_versions/rules.py` | `tests/test_m3.py::test_tombstone_beats_late_old_write` |
 | TRAP-23 | 延迟阈值边界 | 多判延迟 | 等于阈值通过 | `app/modules/m5_latency/rules.py` | `tests/test_m5.py::test_threshold_equal_pass` |
+| TRAP-31 | 切新索引后已撤文档回落 | 旧索引残留重新可见 | 墓碑压制一切路由，不回落 | `app/modules/m8_retrieval/rules.py` | `tests/test_m8.py::test_tombstoned_doc_never_falls_back_to_legacy` |
+| TRAP-32 | 新索引未重建的可见文档 | 一次性切换导致命中消失 | 台账PENDING限定回落只读旧索引 | `app/modules/m8_retrieval/rules.py` | `tests/test_m8.py::test_pending_visible_doc_kept_via_legacy_fallback` |
+| TRAP-33 | 重跑迁移扩大范围 | 同一迁移改换处理对象 | 台账指纹冻结，范围变更即换批次 | `app/modules/m8_retrieval/rules.py` | `tests/test_m8.py::test_widened_scope_creates_distinct_run` |
+| TRAP-34 | 旧索引切换后丢记录 | 覆盖删除失去复核依据 | 旧索引只读快照，无主台账入凭据 | `app/archive.py` | `tests/test_m8.py::test_orphan_ledger_entry_is_exposed_not_silently_dropped` |
 
 ## 对账规则
 
